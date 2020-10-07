@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
-const Pagination = () => {
+const Pagination = (props) => {
 
-    const PageCount = () => {
+    const PageCount = (props) => {
+        console.log("PAGES", props)
         return(
             <button className="btn btn-secondary ml-2">
-            x
+            {props.num}
             </button>
         )
     }
@@ -15,7 +16,14 @@ const Pagination = () => {
             <button className="btn btn-secondary">
                 back
             </button>
-            <PageCount />
+            {
+                [1,2,3,4,5,6,7,8,9,10].splice(0,props.pageCount).map(num=>
+                    <PageCount 
+                        key={num}
+                        num={num}
+                    />
+                    )
+            }
             <button className="btn btn-secondary ml-2">
                 next
             </button>

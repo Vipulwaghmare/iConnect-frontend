@@ -5,12 +5,10 @@ import Pagination from './Pagination'
 import Base from './Base'
 import { Link } from 'react-router-dom'
 import { getCompanyByName } from '../BackendCalls/getCompanyByName'
-import { useDispatch, connect } from 'react-redux'
-import { ADD_MAIN_LIST } from '../redux/action'
 
-const Home = (props) => {
+const Home = () => {
     const [companies, setCompanies] = useState([])
-    const [showCompanies, setShowCompanies] = useState()
+    const [showCompanies, setShowCompanies] = useState([])
     const [search, setSearch] = useState('')
     const [searchResult, setSearchResult] = useState({
         result: false,
@@ -22,8 +20,10 @@ const Home = (props) => {
         city: '',
         error: ''
     })
-
-    const dispatch = useDispatch()
+    const [pageNo, setPageNo] = useState(1)
+    const [pageCount, setPageCount] = useState(1)
+    const [first, setFirst] = useState((pageNo-1)*5)
+    const [second, setSecond] = useState(first + 5)
 
     const handleChange = e => {
         setSearch(e.target.value)
@@ -70,12 +70,8 @@ const Home = (props) => {
                 console.log(data.error)
             } else {
                 setCompanies(data)
-                dispatch({
-                    type: ADD_MAIN_LIST,
-                    payload: {
-                        companies: data
-                    }
-                })
+                setShowCompanies(data.splice(first,second))
+                setPageCount(data.length)
             }
         })
     }
@@ -86,12 +82,8 @@ const Home = (props) => {
                 console.log(data.error)
             } else {
                 setCompanies(data)
-                dispatch({
-                    type: ADD_MAIN_LIST,
-                    payload: {
-                        companies: data
-                    }
-                })
+                setShowCompanies(data.splice(first,second))
+                setPageCount(data.length)
             }
         })
     }
@@ -102,12 +94,8 @@ const Home = (props) => {
                 console.log(data.error)
             } else {
                 setCompanies(data)
-                dispatch({
-                    type: ADD_MAIN_LIST,
-                    payload: {
-                        companies: data
-                    }
-                })
+                setShowCompanies(data.splice(first,second))
+                setPageCount(data.length)
             }
         })
     }
@@ -118,6 +106,12 @@ const Home = (props) => {
 
     return(
         <Base>
+        {console.log("Page No",pageNo)}
+        {console.log("Page Count No",pageCount)}
+        {console.log("First",first)}
+        {console.log("Second",second)}
+        {console.log("Show Companies",showCompanies)}
+        {console.log("Companies",companies)}
         <div className="container-fluid container-lg">
         {/* Search Bar */}
         <div className="input-group mb-3">
@@ -201,7 +195,7 @@ const Home = (props) => {
         </div>
         <div className="mt-3">
         {
-            companies.map(corp=> {
+            showCompanies.map(corp=> {
                 return(
                     <CompanyDetails
                         key={corp._id}
@@ -216,14 +210,13 @@ const Home = (props) => {
         }
         </div>
         </div>
-        <Pagination />
+        <Pagination 
+            pageNo={pageNo}
+            pageCount = {pageCount}
+        />
         </div>
         </Base>
     )
 }
 
-const mapStateToProps = state => {
-    return state
-}
-
-export default connect(mapStateToProps)(Home)
+export default (Home)

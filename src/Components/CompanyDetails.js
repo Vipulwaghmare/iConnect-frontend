@@ -3,16 +3,13 @@ import { Redirect } from 'react-router-dom'
 import { deleteCompany } from '../BackendCalls/deleteCompany'
 import EditCompany from './EditCompany'
 
-import { useDispatch, connect } from 'react-redux'
 
 const CompanyDetails = (props) => {
     
     const [edit,setEdit] = useState(false)
     const [ del, setDel ] = useState(false) // to delete
     const [reload, setReload] = useState(false)
-    const [count, setCount] = useState(props.companies ? props.companies.length : 0)
-
-    const dispatch = useDispatch()
+    
 
     const handleDelete = (e) => {
         e.preventDefault()
@@ -106,8 +103,5 @@ const CompanyDetails = (props) => {
     )
 }
 
-const mapStateToProps = state => {
-    return state
-}
 
-export default connect(mapStateToProps)(CompanyDetails)
+export default (CompanyDetails)

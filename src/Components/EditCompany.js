@@ -1,16 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import { addCompany } from '../BackendCalls/addCompany'
+import { editCompany } from '../BackendCalls/editCompany'
 import states from '../state'
-import Base from './Base'
 
-const CreateCompany = () => {
+const EditCompany = (props) => {
     
     const [values, setValues] = useState({
-        name: '',
-        description: '',
-        contact: '',
+        name: props.name,
+        description: props.description,
+        contact: props.contact,
         logo: '',
-        email: '',
+        email: props.email,
         stateArray: states,
         state: '',
         city: '',
@@ -42,7 +41,7 @@ const CreateCompany = () => {
 
     const onSubmit = e => {
         e.preventDefault()
-        addCompany(formData, name, email).then(data=> {
+        editCompany(formData, name, email).then(data=> {
             if(data.error){
                 setValues({ 
                     ...values,
@@ -84,9 +83,8 @@ const CreateCompany = () => {
     }
 
     return(
-        <Base>
         <div className="container-fluid">
-        <div className="h4 text-center text-primary">Add A Company</div>
+        <div className="h4 text-center text-primary">Edit Company Details </div>
             <form className="container">
                 {errorMessage()}
                 {successMessage()}
@@ -203,8 +201,7 @@ const CreateCompany = () => {
                 </div>
             </form>
         </div>
-        </Base>
     )
 }
 
-export default CreateCompany;
+export default EditCompany;

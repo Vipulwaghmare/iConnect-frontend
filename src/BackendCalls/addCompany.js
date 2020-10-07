@@ -10,7 +10,6 @@ export const addCompany = (company, name, email) => {
     }).then(res=>{
         return res.json()
     }).then(res=> {
-        console.log(res)
         return res
     }).catch(err=> {
         return {error : "Unable to connect to server"}

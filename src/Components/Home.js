@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { getallcompanies } from '../BackendCalls/getallcompanies'
+import { getallcompanies, getallasccompanies, getalldsccompanies } from '../BackendCalls/getallcompanies'
 import CompanyDetails from './CompanyDetails'
 import Pagination from './Pagination'
 import Base from './Base'
 import { Link } from 'react-router-dom'
 import { getCompanyByName } from '../BackendCalls/getCompanyByName'
+import { useDispatch, connect } from 'react-redux'
+import { ADD_MAIN_LIST } from '../redux/action'
 
-const Home = () => {
+const Home = (props) => {
     const [companies, setCompanies] = useState([])
-    const [values, setValues] = useState({
-        TotalCount: 1
-    })
+    const [showCompanies, setShowCompanies] = useState()
     const [search, setSearch] = useState('')
     const [searchResult, setSearchResult] = useState({
         result: false,
@@ -22,6 +22,8 @@ const Home = () => {
         city: '',
         error: ''
     })
+
+    const dispatch = useDispatch()
 
     const handleChange = e => {
         setSearch(e.target.value)
@@ -39,6 +41,7 @@ const Home = () => {
                         error: data.error
                     })
                 } else {
+                    setCompanies(data)
                     setSearchResult({
                         ...searchResult,
                         result: true,
@@ -61,12 +64,50 @@ const Home = () => {
         }
     }
 
+    const handleSortAsc = () => {
+        getallasccompanies().then(data=>{
+            if(data.error){
+                console.log(data.error)
+            } else {
+                setCompanies(data)
+                dispatch({
+                    type: ADD_MAIN_LIST,
+                    payload: {
+                        companies: data
+                    }
+                })
+            }
+        })
+    }
+
+    const handleSortDsc = () => {
+        getalldsccompanies().then(data=>{
+            if(data.error){
+                console.log(data.error)
+            } else {
+                setCompanies(data)
+                dispatch({
+                    type: ADD_MAIN_LIST,
+                    payload: {
+                        companies: data
+                    }
+                })
+            }
+        })
+    }
+
     const loadAllCompanies = () => {
         getallcompanies().then(data=>{
             if(data.error){
                 console.log(data.error)
             } else {
                 setCompanies(data)
+                dispatch({
+                    type: ADD_MAIN_LIST,
+                    payload: {
+                        companies: data
+                    }
+                })
             }
         })
     }
@@ -105,6 +146,14 @@ const Home = () => {
                 email : {searchResult.email} <br />
                 state: {searchResult.state} <br />
                 city: {searchResult.city} <br />
+                <button 
+                    onClick={()=>{
+                        loadAllCompanies()
+                        setSearchResult('')
+                    }}
+                    className="btn btn-danger">
+                Cancel search
+                </button>
             </div>
         }
         {
@@ -117,13 +166,19 @@ const Home = () => {
         </div>
         <div className="row mb-3">
             <div className="col-2">
-                <button className="btn btn-primary btn-block">
+                <button 
+                    className="btn btn-primary btn-block"
+                    onClick={handleSortAsc}
+                    >
                     Asc
                 </button>
             </div>
             <div className="col-2">
-                <button className="btn btn-primary btn-block">
-                    Des
+                <button 
+                    className="btn btn-primary btn-block"
+                    onClick={handleSortDsc}
+                    >
+                    Dsc
                 </button>
             </div>
             <div className="col-4"></div>
@@ -135,7 +190,6 @@ const Home = () => {
         </button>
             </div>
         </div>
-        
         {/* Main Rows */}
         <div className="list">
         <div className="row text-center">
@@ -168,4 +222,8 @@ const Home = () => {
     )
 }
 
-export default Home
+const mapStateToProps = state => {
+    return state
+}
+
+export default connect(mapStateToProps)(Home)

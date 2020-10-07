@@ -41,7 +41,7 @@ const CompanyDetails = (props) => {
 
     return(
         <div>
-        <div className="row">
+        <div className="row mb-3">
             <div className="col-1">Logo</div>
             <div className="col">{props.name}</div>
             <div className="col">{props.description}</div>
@@ -52,15 +52,28 @@ const CompanyDetails = (props) => {
                 className="btn btn-danger">
                 Delete
             </button>
-            <button 
+            {
+                edit && 
+                <button 
                 onClick={()=>{setEdit(!edit)}}
-                className="btn btn-info">
-                Edit
+                className="btn btn-danger ml-1">
+                Close
             </button>
+            }
+            {
+                edit || 
+                <button 
+                onClick={()=>{setEdit(!edit)}}
+                className="btn btn-info ml-1">
+                edit
+            </button>
+            }
+            
         </div>
         <div>
         { edit &&
             <EditCompany 
+                id={props.id}
                 name={props.name}
                 description={props.description}
                 contact={props.number}

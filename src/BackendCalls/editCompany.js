@@ -1,13 +1,12 @@
 import { API } from "../backendApi"
 
-export const editCompany = (company, name, email) => {
-    return fetch(`${API}/addCompany`,{
+export const editCompany = (company, id) => {
+    return fetch(`${API}/editCompany/${id}`,{
         method: "PUT",
         headers: {
             Accept: "application/json",
         },
-        body: company,
-        body2: name
+        body: company
     }).then(res=>{
         return res.json()
     }).then(res=> {

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom'
 import { addCompany } from '../BackendCalls/addCompany'
 import states from '../state'
 import Base from './Base'
@@ -85,8 +86,18 @@ const CreateCompany = () => {
 
     return(
         <Base>
-        <div className="container-fluid">
-        <div className="h4 text-center text-primary">Add A Company</div>
+        <div className="container">
+        <div className="row">
+        <div className="h4 text-center text-primary col-9">Add A Company</div>
+        <div className="col-1">
+            <button className="btn btn-danger">
+                <Link to="/" className="text-light">
+                    X
+                </Link>
+            </button>
+        </div>
+        </div>
+        
             <form className="container">
                 {errorMessage()}
                 {successMessage()}

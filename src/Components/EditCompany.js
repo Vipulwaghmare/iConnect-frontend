@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
+import { Redirect } from 'react-router-dom'
 import { editCompany } from '../BackendCalls/editCompany'
 import states from '../state'
 
 const EditCompany = (props) => {
     
     const [values, setValues] = useState({
+        id: props.id,
         name: props.name,
         description: props.description,
         contact: props.contact,
@@ -15,12 +17,13 @@ const EditCompany = (props) => {
         city: '',
         formData: new FormData(),
         error: '',
-        success: ''
+        success: '',
+        redirect: false
     })
 
     const [cityArray, setCityArray] = useState([])
 
-    const { name, description, contact, logo, email, state, stateArray, formData, error, success } = values
+    const {id, name, description, contact, logo, email, state, stateArray, formData, error, success, redirect } = values
 
     useEffect(()=> {
         stateArray.map(s=> {
@@ -28,6 +31,12 @@ const EditCompany = (props) => {
                 setCityArray(s.city)
             }
         })
+        formData.set('_id',props.id)
+        formData.set('name', name)
+        formData.set('description', description)
+        formData.set('contact', contact)
+        formData.set('email',email)
+        formData.set('state',state)
     })
 
     const handleChange = e => {
@@ -41,7 +50,7 @@ const EditCompany = (props) => {
 
     const onSubmit = e => {
         e.preventDefault()
-        editCompany(formData, name, email).then(data=> {
+        editCompany(formData, id).then(data=> {
             if(data.error){
                 setValues({ 
                     ...values,
@@ -57,8 +66,9 @@ const EditCompany = (props) => {
                     email: '',
                     state: '',
                     city: '',
-                    success: `${data.name} is Added successfully`,
-                    error: ''
+                    success: `${data.name} is Updated successfully`,
+                    error: '',
+                    redirect: true
                 })
             }
         })
@@ -82,8 +92,18 @@ const EditCompany = (props) => {
         )
     }
 
+    const redirecting = () => {
+        return(
+            redirect && 
+            <div>
+            <Redirect to="/" />
+            </div>
+        )
+    }
+
     return(
-        <div className="container-fluid">
+        <div className="container-fluid mb-3 mt-2">
+        {redirecting()}
         <div className="h4 text-center text-primary">Edit Company Details </div>
             <form className="container">
                 {errorMessage()}

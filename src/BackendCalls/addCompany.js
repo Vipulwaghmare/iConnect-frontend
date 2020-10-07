@@ -7,7 +7,6 @@ export const addCompany = (company, name, email) => {
             Accept: "application/json",
         },
         body: company,
-        body2: name
     }).then(res=>{
         return res.json()
     }).then(res=> {

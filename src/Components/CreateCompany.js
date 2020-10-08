@@ -34,16 +34,25 @@ const CreateCompany = () => {
 
     const handleChange = e => {
         const {name, value } = e.target
-        formData.set(name, value);
-        setValues({
-            ...values,
-            [name]: value
-        })
+        if(name === "logo"){
+            formData.set(name, e.target.files[0]);
+            setValues({
+                ...values,
+                [name]: e.target.files[0]
+            })
+        } else {
+            formData.set(name, value);
+            setValues({
+                ...values,
+                [name]: value
+            })
+        }
+        
     }
 
     const onSubmit = e => {
         e.preventDefault()
-        addCompany(formData, name, email).then(data=> {
+        addCompany(formData).then(data=> {
             if(data.error){
                 setValues({ 
                     ...values,

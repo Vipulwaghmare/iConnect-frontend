@@ -54,7 +54,6 @@ const Pagination = (props) => {
 
     return(
         <div className="text-center mb-2 mt-2">
-        {console.log("PAGE", props.pageNo)}
             <button 
                 onClick={handleBack}
                 className="btn btn-outline-secondary">

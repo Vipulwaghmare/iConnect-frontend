@@ -205,7 +205,7 @@ const Home = (props) => {
         </div>
         <div className="mt-3">
         {
-            [...companies].splice(first,second).map(corp=> {
+            [...companies].slice(first,second).map(corp=> {
                 return(
                     <CompanyDetails
                         key={corp._id}
@@ -214,6 +214,8 @@ const Home = (props) => {
                         description={corp.description}
                         number={corp.contact}
                         email={corp.email}
+                        state={corp.state}
+                        city={corp.city}
                     />
                 )
             })

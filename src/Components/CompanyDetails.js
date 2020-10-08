@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import { API } from '../backendApi'
 import { deleteCompany } from '../BackendCalls/deleteCompany'
 import EditCompany from './EditCompany'
 
@@ -9,6 +10,19 @@ const CompanyDetails = (props) => {
     const [edit,setEdit] = useState(false)
     const [ del, setDel ] = useState(false) // to delete
     const [reload, setReload] = useState(false)
+
+    const ImageHelper = props => {
+        const imageUrl = `${API}/logo/${props.companyId}`
+        return(
+            <div>
+                <img 
+                    className="logo"
+                    src={imageUrl} 
+                    alt="logo"
+                    />
+            </div>
+        )
+    }
     
 
     const handleDelete = (e) => {
@@ -42,18 +56,23 @@ const CompanyDetails = (props) => {
     }
 
     return(
-        <div>
-        <div className="row mb-3">
-            <div className="col-1">Logo</div>
-            <div className="col">{props.name}</div>
-            <div className="col">{props.description}</div>
-            <div className="col">{props.number}</div>
-            <div className="col">{props.email}</div>
+        <div className="mb-2">
+        <div className="row mb-1">
+            <div className="col-1">
+                <ImageHelper companyId= {props.id} />
+            </div>
+            <div className="col-1">{props.name}</div>
+            <div className="col-4">{props.description}</div>
+            <div className="col-1">{props.number}</div>
+            <div className="col-3">{props.email}</div>
+            <div className="col-1">
             <button 
                 onClick={()=>{setDel(!del)}}
                 className="btn btn-danger">
                 Delete
             </button>
+            </div>
+            <div className="col-1">
             {
                 edit && 
                 <button 
@@ -70,6 +89,7 @@ const CompanyDetails = (props) => {
                 edit
             </button>
             }
+            </div>
             
         </div>
         <div>
@@ -98,6 +118,8 @@ const CompanyDetails = (props) => {
             </div>
         }
         </div>
+        <div className="badge badge-info ml-2">{props.state}</div>
+        <div className="badge badge-info ml-2">{props.city}</div>
         </div>
         
     )

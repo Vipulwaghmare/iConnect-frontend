@@ -1,6 +1,6 @@
 import { API } from "../backendApi"
 
-export const addCompany = (company, name, email) => {
+export const addCompany = (company) => {
     return fetch(`${API}/addCompany`,{
         method: "POST",
         headers: {

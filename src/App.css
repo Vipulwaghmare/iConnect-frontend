@@ -4,3 +4,7 @@ main{
 .list{
     min-height: 400px;
 }
+.logo{
+    max-width: 4em;
+    max-height: 4em;
+}

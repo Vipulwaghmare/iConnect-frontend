@@ -162,6 +162,7 @@ const CreateCompany = () => {
                         name="logo"
                         accept="image"
                         onChange={handleChange}
+                        required
                     ></input>
                 </div>
                 <div className="row">

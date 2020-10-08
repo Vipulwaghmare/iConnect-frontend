@@ -5,5 +5,7 @@ export const deleteCompany =(id) => {
         method: "DELETE"
     }).then(res=>{
         return res.json()
-    }).catch(error=> console.log(error))
+    }).catch(error=>{
+        return  {error : "Unable to connect to server"}
+    })
 }

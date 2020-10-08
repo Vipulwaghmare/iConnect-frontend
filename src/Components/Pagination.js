@@ -1,19 +1,63 @@
 import React, {useState, useEffect} from 'react'
+import { connect, useDispatch } from 'react-redux'
+import { BACK, CHANGE_PAGE, NEXT } from '../redux/action'
 
 const Pagination = (props) => {
 
     const PageCount = (props) => {
-        console.log("PAGES", props)
-        return(
-            <button className="btn btn-secondary ml-2">
-            {props.num}
-            </button>
-        )
+        if(props.num === props.current){
+            return(
+                <button 
+                    onClick={()=> {
+                        dispatch({
+                            type: CHANGE_PAGE,
+                            payload:{
+                                pageNo: props.num
+                            }
+                        })
+                    }}
+                    className="btn btn-secondary ml-2 ">
+                    {props.num}
+                </button>
+            )
+        } else {
+            return(
+                <button 
+                    onClick={()=> {
+                        dispatch({
+                            type: CHANGE_PAGE,
+                            payload:{
+                                pageNo: props.num
+                            }
+                        })
+                    }}
+                    className="btn btn-outline-secondary ml-2 ">
+                    {props.num}
+                </button>
+            )
+        }
+    }
+
+    const dispatch = useDispatch()
+
+    const handleBack = () => {
+        dispatch({
+            type: BACK
+        })
+    }
+
+    const handleNext = () => {
+        dispatch({
+            type: NEXT
+        })
     }
 
     return(
         <div className="text-center mb-2 mt-2">
-            <button className="btn btn-secondary">
+        {console.log("PAGE", props.pageNo)}
+            <button 
+                onClick={handleBack}
+                className="btn btn-outline-secondary">
                 back
             </button>
             {
@@ -21,14 +65,22 @@ const Pagination = (props) => {
                     <PageCount 
                         key={num}
                         num={num}
+                        current={props.pageNo}
                     />
                     )
             }
-            <button className="btn btn-secondary ml-2">
+            <button 
+                onClick={handleNext}
+                className="btn btn-outline-secondary ml-2">
                 next
             </button>
         </div>
     )
 }
 
-export default Pagination
+
+const mapStateToProps = state => {
+    return state
+}
+
+export default connect(mapStateToProps)(Pagination)

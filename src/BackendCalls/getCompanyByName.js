@@ -12,5 +12,7 @@ export const getCompanyByName = (name) => {
         .then(response=> {
             return response.json()
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            return  {error : "Unable to connect to server"}
+        })
 }

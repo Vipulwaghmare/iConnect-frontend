@@ -5,10 +5,11 @@ import Pagination from './Pagination'
 import Base from './Base'
 import { Link } from 'react-router-dom'
 import { getCompanyByName } from '../BackendCalls/getCompanyByName'
+import { connect, useDispatch } from 'react-redux'
+import { SET_TOTAL_PAGES } from '../redux/action'
 
-const Home = () => {
+const Home = (props) => {
     const [companies, setCompanies] = useState([])
-    const [showCompanies, setShowCompanies] = useState([])
     const [search, setSearch] = useState('')
     const [searchResult, setSearchResult] = useState({
         result: false,
@@ -20,10 +21,12 @@ const Home = () => {
         city: '',
         error: ''
     })
-    const [pageNo, setPageNo] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
-    const [first, setFirst] = useState((pageNo-1)*5)
-    const [second, setSecond] = useState(first + 5)
+    const [pageNo, setPageNo] = useState(1) // Current page
+    const [pageCount, setPageCount] = useState(1) // Total No. of pages
+    const [first, setFirst] = useState((pageNo-1)*5) // First index to slice all company arrays as per page number
+    const [second, setSecond] = useState(first + 5) // Second index to slice all company arrays as per page number
+
+    const dispatch = useDispatch()
 
     const handleChange = e => {
         setSearch(e.target.value)
@@ -50,8 +53,11 @@ const Home = () => {
                         contact: data[0].contact,
                         email : data[0].email,
                         state: data[0].state,
-                        city: data[0].city
+                        city: data[0].city,
+                        error: ''
                     })
+                    setPageNo(1)
+                    setPageCount(1)
                 }
             })
             .catch(error => {
@@ -69,9 +75,8 @@ const Home = () => {
             if(data.error){
                 console.log(data.error)
             } else {
-                setCompanies(data)
-                setShowCompanies(data.splice(first,second))
-                setPageCount(data.length)
+                setCompanies([...data])
+                setPageCount(Math.ceil(data.length/5))
             }
         })
     }
@@ -81,9 +86,8 @@ const Home = () => {
             if(data.error){
                 console.log(data.error)
             } else {
-                setCompanies(data)
-                setShowCompanies(data.splice(first,second))
-                setPageCount(data.length)
+                setCompanies([...data])
+                setPageCount(Math.ceil(data.length/5))
             }
         })
     }
@@ -93,25 +97,31 @@ const Home = () => {
             if(data.error){
                 console.log(data.error)
             } else {
-                setCompanies(data)
-                setShowCompanies(data.splice(first,second))
-                setPageCount(data.length)
+                console.log("DATA", data)
+                setCompanies([...data])
+                setPageCount(Math.ceil(data.length/5))
             }
         })
     }
 
     useEffect(()=>{
-        loadAllCompanies()
+         loadAllCompanies()
     },[])
+
+    useEffect(()=> {
+        dispatch({
+            type: SET_TOTAL_PAGES,
+            payload: {
+                count: pageCount
+            }
+        })
+        setPageNo(props.pageNo)
+        setFirst((pageNo-1)*5)
+        setSecond(first + 5)
+    })
 
     return(
         <Base>
-        {console.log("Page No",pageNo)}
-        {console.log("Page Count No",pageCount)}
-        {console.log("First",first)}
-        {console.log("Second",second)}
-        {console.log("Show Companies",showCompanies)}
-        {console.log("Companies",companies)}
         <div className="container-fluid container-lg">
         {/* Search Bar */}
         <div className="input-group mb-3">
@@ -195,7 +205,7 @@ const Home = () => {
         </div>
         <div className="mt-3">
         {
-            showCompanies.map(corp=> {
+            [...companies].splice(first,second).map(corp=> {
                 return(
                     <CompanyDetails
                         key={corp._id}
@@ -219,4 +229,8 @@ const Home = () => {
     )
 }
 
-export default (Home)
+const mapStateToProps = state => {
+    return state
+}
+
+export default connect(mapStateToProps) (Home)

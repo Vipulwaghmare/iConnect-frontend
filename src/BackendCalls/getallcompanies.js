@@ -7,7 +7,9 @@ export const getallcompanies = () => {
         .then(response=> {
             return response.json()
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            return  {error : "Unable to connect to server"}
+        })
 }
 
 export const getallasccompanies = () => {
@@ -17,7 +19,9 @@ export const getallasccompanies = () => {
         .then(response=> {
             return response.json()
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            return  {error : "Unable to connect to server"}
+        })
 }
 
 export const getalldsccompanies = () => {
@@ -27,5 +31,7 @@ export const getalldsccompanies = () => {
         .then(response=> {
             return response.json()
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            return  {error : "Unable to connect to server"}
+        })
 }

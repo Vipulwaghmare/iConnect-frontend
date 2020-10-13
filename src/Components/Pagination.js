@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { BACK, CHANGE_PAGE, NEXT } from '../redux/action'
 

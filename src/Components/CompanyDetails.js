@@ -56,7 +56,7 @@ const CompanyDetails = (props) => {
     }
 
     return(
-        <div className="mb-2">
+        <div className="mb-2 company">
         <div className="row mb-1">
             <div className="col-1">
                 <ImageHelper companyId= {props.id} />

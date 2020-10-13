@@ -23,7 +23,7 @@ const EditCompany = (props) => {
 
     const [cityArray, setCityArray] = useState([])
 
-    const {id, name, description, contact, logo, email, state, stateArray, formData, error, success, redirect } = values
+    const {id, name, description, contact, email, state, stateArray, formData, error, success, redirect } = values
 
     useEffect(()=> {
         stateArray.map(s=> {
@@ -169,6 +169,7 @@ const EditCompany = (props) => {
                         name="logo"
                         accept="image"
                         onChange={handleChange}
+                        required
                     ></input>
                 </div>
                 <div className="row">

@@ -22,7 +22,7 @@ const CreateCompany = () => {
 
     const [cityArray, setCityArray] = useState([])
 
-    const { name, description, contact, logo, email, state, stateArray, formData, error, success } = values
+    const { name, description, contact, email, state, stateArray, formData, error, success } = values
 
     useEffect(()=> {
         stateArray.map(s=> {

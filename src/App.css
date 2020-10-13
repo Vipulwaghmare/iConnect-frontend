@@ -8,3 +8,7 @@ main{
     max-width: 4em;
     max-height: 4em;
 }
+.company{
+    border: 1px solid gainsboro;
+    padding: 1em;
+}
